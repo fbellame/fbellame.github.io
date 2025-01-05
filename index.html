@@ -1,265 +1,223 @@
-<h1 id="a-short-comparison-of-popular-agent-frameworks">A short comparison of popular Agent Frameworks</h1>
-<p><br></p>
-<p><a href="https://www.youtube.com/@faridautomatic"><img src="images/mini-agent-comp.png" alt="Introduction to Agent Frameworks"></a></p>
-<h2 id="understanding-the-rise-of-agent-frameworks-in-2025">Understanding the rise of Agent Frameworks in 2025</h2>
-<p>The next wave of AI is agentic, a sweeping tide reshaping the shores of technology and human interaction. Like a powerful current, it pulls everything in its path, transforming how we make decisions, solve problems, and navigate our lives. Dive with me into these waters as we explore three powerful currents - CrewAI&#39;s orchestrated flow, AutoGen&#39;s interweaving streams, and LangGraph&#39;s precise tidal patterns - each carving unique channels in the ever-evolving seascape of artificial intelligence.</p>
-<h2 id="why-agent-frameworks-matter">Why Agent Frameworks matter</h2>
-<p><br>As artificial intelligence continues to transform industries, <strong>agent frameworks</strong> are emerging as a game-changer in <strong>2025</strong>.</p>
-<p>Key advantages include:</p>
-<h2 id="comparison-agent-framework-vs-large-language-model-llm-">Comparison: Agent Framework vs. Large Language Model (LLM)</h2>
-<h3 id="-1-large-language-model-llm-"><strong>1. Large Language Model (LLM)</strong></h3>
-<h4 id="-definition-"><strong>Definition</strong></h4>
-<p>A <strong>Large Language Model</strong> (like ChatGPT) is a pre-trained neural network that processes and generates human-like text. It uses large datasets to understand language patterns and context.</p>
-<h3 id="-core-characteristics-"><strong>Core Characteristics</strong>:</h3>
-<ul>
-<li><strong>Primary Function</strong>: Processes and generates text based on input prompts.</li>
-<li><strong>Stateless</strong>: Each interaction is independent unless explicitly extended with tools like memory.</li>
-<li><strong>General Purpose</strong>: Handles a wide variety of tasks (e.g., answering questions, summarization, writing code) but relies on prompts for task-specific behavior.</li>
-<li><strong>Does Not Manage Workflows</strong>: Operates on single-turn inputs without built-in orchestration or automation of complex workflows.</li>
-<li><strong>Example</strong>: ChatGPT or GPT-4 by OpenAI.</li>
-</ul>
-<hr>
-<h3 id="-2-agent-framework-"><strong>2. Agent Framework</strong></h3>
-<h4 id="-definition-"><strong>Definition</strong></h4>
-<p>An <strong>Agent Framework</strong> is a system or library designed to orchestrate <strong>multiple agents</strong>, including LLMs, APIs, or custom logic, for performing <strong>complex, multi-step tasks</strong> in an automated and collaborative manner.</p>
-<h4 id="-core-characteristics-"><strong>Core Characteristics</strong>:</h4>
-<ul>
-<li><strong>Workflow Management</strong>: Automates workflows involving multiple steps, tools, or agents.</li>
-<li><strong>Stateful</strong>: Tracks the state of tasks across multiple interactions, maintaining context continuity.</li>
-<li><strong>Integration</strong>: Combines LLMs with external tools (e.g., databases, APIs, cloud services).</li>
-<li><strong>Customizable</strong>: Tailored to specific use cases like code automation, data analysis, or customer support.</li>
-<li><strong>Collaborative Agents</strong>: Enables communication and coordination between multiple agents (e.g., human-in-the-loop systems, multi-agent collaboration).</li>
-<li><strong>Example</strong>: LangGraph, AutoGen, LangChain.</li>
-</ul>
-<hr>
-<h3 id="-key-differences-"><strong>Key Differences</strong></h3>
-<p><img src="images/llm-agent-comparison.png" alt="comparison LLM vs Agent"></p>
-<hr>
-<h3 id="-analogy-"><strong>Analogy</strong></h3>
-<p>Think of an <strong>LLM like ChatGPT</strong> as a highly skilled worker that can handle individual tasks on demand but needs explicit instructions every time.<br>An <strong>Agent Framework</strong>, on the other hand, is like a <strong>project manager</strong> that oversees multiple workers (LLMs, APIs, tools), ensuring they collaborate effectively to complete a complex project.</p>
-<hr>
-<h3 id="-use-cases-"><strong>Use Cases</strong></h3>
-<ul>
-<li><strong>LLM</strong>: Quick text generation, idea brainstorming, or Q&amp;A sessions.</li>
-<li><strong>Agent Framework</strong>: Automating customer service processes, orchestrating data pipelines, creating autonomous coding assistants, or managing multi-agent systems.</li>
-</ul>
-<ul>
-<li><strong>Business Operations</strong>: <a href="https://www.reuters.com/technology/artificial-intelligence/autonomous-agents-profitability-dominate-ai-agenda-2025-executives-forecast-2024-12-12/">Reuters: Autonomous agents and profitability to dominate AI agenda in 2025, executives forecast</a></li>
-<li><strong>Productivity Tools</strong>: AI assistants capable of reasoning are expected to become mainstream, transforming daily workflows. <a href="https://www.ft.com/content/30677465-33bb-4f74-a8e6-239980091f7a">Financial Times</a></li>
-</ul>
-<h2 id="a-comparative-analysis-of-leading-frameworks">A comparative analysis of leading Frameworks</h2>
-<p>This article provides a short comparison of three prominent agent frameworks:</p>
-<ul>
-<li><strong>Autogen</strong></li>
-<li><strong>CrewAI</strong></li>
-<li><strong>LangGraph</strong></li>
-</ul>
-<p>These frameworks were chosen for their growing popularity on GitHub, open-source accessibility, and robust feature sets, which make them standout choices for developers and researchers alike. </p>
-<p>By exploring their capabilities, this comparison aims to equip readers with the knowledge needed to navigate the agent framework landscape.</p>
-<h2 id="comparison-criteria">Comparison criteria</h2>
-<p>When selecting agent frameworks, clear evaluation criteria become your compass for navigating the complex landscape of AI solutions. These criteria encompass core aspects: technical capability, scalability potential, and development experience. By carefully weighing how CrewAI, AutoGen, and LangGraph perform across these dimensions, teams can better align their choice with project requirements while ensuring sustainable development paths. This methodical assessment helps cut through the complexity, leading to more confident and successful implementations.</p>
-<h3 id="1-ease-of-use">1. Ease of Use</h3>
-<ul>
-<li>Refers to how intuitive and user-friendly the framework is for developers.</li>
-<li>Includes aspects such as clear documentation, straightforward APIs, and community support.</li>
-</ul>
-<h3 id="2-performance">2. Performance</h3>
-<ul>
-<li>Focuses on the framework’s ability to handle tasks efficiently.</li>
-<li>Includes metrics like execution speed, resource optimization, and scalability.</li>
-</ul>
-<h3 id="3-deployment-capabilities">3. Deployment Capabilities</h3>
-<ul>
-<li>Evaluates the framework’s flexibility to be deployed across various environments.</li>
-<li>Includes support for platforms like cloud services and on-premises systems.</li>
-</ul>
-<h3 id="4-user-interface">4. User Interface</h3>
-<ul>
-<li>Assesses the tools available for managing, monitoring, and debugging agents.</li>
-<li>Includes features like visual workflows, logging systems, and dashboards.</li>
-</ul>
-<h2 id="use-case">Use case</h2>
-<p>To ensure a fair evaluation, we will implement the same use case across all three frameworks. </p>
-<p>This approach allows us to directly compare their capabilities, development patterns, and performance while solving identical requirements. By maintaining consistent testing conditions, we can effectively highlight each framework&#39;s strengths and limitations.</p>
-<p><a href="https://youtube.com/clip/UgkxEY6keXam1mYTpz1jvvUv_X6V5om6FL0s?si=y9Uus_NOomiX5rOb"><img src="images/cas-utilisation.png" alt="Use case"></a></p>
-<h4 id="objective">Objective</h4>
-<p>To provide a <strong>rating (1-10)</strong> for a stock by combining:</p>
-<ol>
-<li><strong>Yahoo Finance data</strong>: Quantitative financial metrics.</li>
-<li><strong>Warren Buffett&#39;s investment principles</strong>: Qualitative evaluation for long-term value investing.</li>
-</ol>
-<h4 id="workflow">Workflow</h4>
-<ol>
-<li><p><strong>Data Collection</strong>:</p>
-<ul>
-<li>Gather financial data from Yahoo Finance.</li>
-<li>Apply Buffett&#39;s principles to evaluate qualitative aspects.</li>
-</ul>
-</li>
-<li><p><strong>Analysis</strong>:</p>
-<ul>
-<li>Combine <strong>quantitative metrics</strong> (Yahoo Finance data) with <strong>qualitative insights</strong> (Buffett principles).</li>
-<li>Assign weights to each factor (e.g., 50% financial metrics, 50% Buffett criteria).</li>
-</ul>
-</li>
-<li><p><strong>Scoring</strong>:</p>
-<ul>
-<li>Develop a formula to compute a final score (1-10).<ul>
-<li><strong>1</strong>: Poor investment.</li>
-<li><strong>10</strong>: Excellent investment opportunity.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>Output</strong>:</p>
-<ul>
-<li>Present the <strong>rating (1-10)</strong> as a simplified indicator for investment decisions into a markdown report.</li>
-</ul>
-</li>
-</ol>
-<h2 id="agent-frameworks-overview">Agent Frameworks overview</h2>
-<h3 id="crewai">CrewAI</h3>
-<p><a href="https://www.crewai.com/"><img src="images/crewai-logo.png" alt="Overview of QAI Framework"></a></p>
-<p><a href="https://www.crewai.com/">CrewAI</a> is a popular open source Agent framework, with more than 23k ⭐ on <a href="https://github.com/crewAIInc/crewAI">gitHub</a>: </p>
-<ul>
-<li>Based on <strong>LangGraph</strong>  </li>
-<li>Released in <strong>2024</strong>  </li>
-<li>Raised <strong>$18M</strong> in funding</li>
-<li>Features <strong>role-based</strong> agents</li>
-</ul>
-<h4 id="key-features-of-crewai">Key Features of CrewAI</h4>
-<p><strong>1. Agent orchestration</strong></p>
-<ul>
-<li>CrewAI facilitates seamless collaboration among multiple agents by assigning specific roles and objectives.</li>
-<li>This structured approach ensures efficient and organized interactions between agents.</li>
-</ul>
-<p><strong>2. Integration with tools</strong></p>
-<ul>
-<li>Agents can integrate and utilize external tools such as <strong>Yahoo Finance</strong> and <strong>file readers</strong>.</li>
-<li>These integrations enable agents to perform more complex and context-aware tasks effectively.</li>
-</ul>
-<p><strong>3. Memory management</strong></p>
-<ul>
-<li>Agents retain memory of their interactions, enhancing consistency and improving task execution over time.</li>
-<li>Memory capabilities allow for continuity in multi-step processes or recurring tasks.</li>
-</ul>
-<p><strong>4. Task delegation</strong></p>
-<ul>
-<li>Tasks can be delegated among agents, optimizing workload distribution.</li>
-<li>This feature ensures faster and more efficient completion of intricate workflows.</li>
-</ul>
-<hr>
-<p><strong>Use case diagram</strong></p>
-<p><a href="https://youtube.com/clip/UgkxA25HzKdng8tkAmTCltpyTg5l9Ij8_Mna?si=rio23AVh13ZlBKnZ"><img src="images/crewai-usecase.png" alt="CrewAI use case"></a></p>
-<p><strong>Evaluation</strong></p>
-<ul>
-<li><strong>Ease of Use</strong>: ⭐⭐⭐⭐ It offers clear visibility of agent concepts and connections even for non-developers.</li>
-<li><strong>Performance</strong>: ⭐⭐ Lacks tools for specific tasks causing issues like hallucinations in LLMs.</li>
-<li><strong>Deployment</strong>: ⭐ Limited to non-secure environments as it doesn’t allow code execution in a secure Docker container.</li>
-<li><strong>User Interface</strong>: ⭐ No widely recognized graphical interface available, limiting design and prototyping capabilities.</li>
-</ul>
-<hr>
-<h3 id="autogen">Autogen</h3>
-<p><a href="https://microsoft.github.io/autogen/0.2/"><img src="images/autogen-logo.png" alt="Overview of QAI Framework"></a></p>
-<p><a href="https://microsoft.github.io/autogen/0.2/">AutoGen</a> is a popular open source Agent framework backed by Microsoft, with more than 36k ⭐ on <a href="https://github.com/microsoft/autogen">gitHub</a>: </p>
-<ul>
-<li>Based on the research of <a href="https://www.microsoft.com/en-us/research/people/chiw/">Dr. Chi Wang</a> at Microsoft and <a href="https://qingyun-wu.github.io/">Dr. Qingyun Wu</a> at Penn State University</li>
-<li>Recently forked into two branches: <strong>version 0.2</strong> and <strong>version 0.4</strong></li>
-<li>Support <strong>Python</strong> and <strong>.Net</strong> languages</li>
-</ul>
-<h3 id="key-features-of-autogen">Key Features of AutoGen</h3>
-<p><strong>1. Multi-Agent Collaboration</strong>  </p>
-<ul>
-<li>AutoGen enables the creation of agent networks where agents collaborate or operate independently.  </li>
-<li>This design supports workflows ranging from fully autonomous systems to those requiring human oversight.</li>
-</ul>
-<p><strong>2. Code Automation</strong>  </p>
-<ul>
-<li>Agents can generate, execute, and debug code automatically, streamlining software development and data analysis tasks.  </li>
-<li>This reduces human intervention and accelerates project timelines.</li>
-</ul>
-<p><strong>3. Integration with Tools and APIs</strong>  </p>
-<ul>
-<li>AutoGen supports integration with external tools and APIs, such as Azure services and databases.  </li>
-<li>This capability expands agent functionality for diverse applications.</li>
-</ul>
-<p><strong>4. Human-in-the-Loop Problem Solving</strong>  </p>
-<ul>
-<li>Agents can request human input for critical decisions, ensuring thoughtful oversight when needed.  </li>
-<li>This feature is ideal for balancing automation with human expertise.</li>
-</ul>
-<hr>
-<p><strong>Use case diagram</strong></p>
-<p><a href="https://youtube.com/clip/UgkxSdZERvmjX7tLQ2-0rFOyV7cgOBaZgJQ8?si=c7OjzYkz7bRUMwrO"><img src="images/autogen-usecase.png" alt="AutoGen use case"></a></p>
-<p><strong>Evaluation</strong></p>
-<ul>
-<li><strong>Ease of Use</strong>: ⭐⭐⭐ Although it remains a developer-focused tool, it uses simple design patterns for implementation. </li>
-<li><strong>Performance</strong>: ⭐⭐⭐⭐ Best among the three, as it automatically generates necessary code for various tasks and offers a secure execution environment. </li>
-<li><strong>Deployment</strong>: ⭐⭐⭐ Provides versatile deployment options including local, cloud, and Docker environments.</li>
-<li><strong>User Interface</strong>: ⭐⭐⭐ Autogen Studio is the available interface, which despite some bugs, is relatively helpful for workflow design.</li>
-</ul>
-<hr>
-<h3 id="-langgraph-framework-"><strong>LangGraph Framework</strong></h3>
-<p><a href="https://www.langchain.com/langgraph"><img src="images/langgraph-logo.png" alt="LangGraph logo"></a></p>
-<p><a href="https://www.langchain.com/langgraph">LangGraph</a> is an open-source orchestration framework designed for building stateful, multi-agent applications with Large Language Models (LLMs). It offers enhanced control over agent workflows, enabling the development of complex, reliable, and fault-tolerant AI systems. It has more than 7k ⭐ on <a href="https://github.com/langchain-ai/langgraph">gitHub</a>: </p>
-<ul>
-<li>Based on the popular <a href="https://www.langchain.com/">LanChain LLM framework</a> </li>
-</ul>
-<h3 id="key-features-of-langgraph">Key Features of LangGraph</h3>
-<p><strong>1. Stateful Orchestration</strong> </p>
-<ul>
-<li>Manages shared state across nodes, facilitating complex workflows with cycles and branches.</li>
-</ul>
-<p><strong>2. Persistence</strong> </p>
-<ul>
-<li>Automatically saves state after each step, allowing for error recovery, human-in-the-loop interactions, and workflow resumption.</li>
-</ul>
-<p><strong>3. Human-in-the-Loop Support</strong> </p>
-<ul>
-<li>Enables interruption of graph execution for human review, approval, or editing of the agent&#39;s planned actions.</li>
-</ul>
-<p><strong>4. Streaming Support</strong> </p>
-<ul>
-<li>Provides real-time output streaming from each node, enhancing interactive applications.</li>
-</ul>
-<p><strong>5. Integration with LangChain</strong></p>
-<ul>
-<li>Seamlessly integrates with LangChain and LangSmith, though it can operate independently.</li>
-</ul>
-<hr>
-<p><strong>Use case diagram</strong></p>
-<p><a href="https://youtube.com/clip/UgkxrGPOZuE_L3hrmLhoqTtVewF5MKduMlM-?si=cJiIW39-vmG_nQVF"><img src="images/langgraph-usecase.png" alt="LangGraph use case"></a></p>
-<p><strong>Evaluation</strong></p>
-<ul>
-<li><strong>Ease of Use</strong>: ⭐ Rated the least user-friendly. However, after initial setup, it proves effective despite its complexity and developer-centric design.</li>
-<li><strong>Performance</strong>: ⭐⭐⭐ For providing numerous customization options through its low-level control.</li>
-<li><strong>Deployment</strong>: ⭐⭐⭐⭐ Extremely versatile with high scores for production capabilities; multiple deployment methods are available.</li>
-<li><strong>User Interface</strong>: ⭐⭐ Lacks a proper design interface but allows debugging and visualizing workflows.</li>
-</ul>
-<h2 id="key-differences">Key differences</h2>
-<p>The analysis reveals several important differences between the agents:</p>
-<ul>
-<li><strong>CrewAI</strong> is good for non-developers but has performance limitations.</li>
-<li><strong>Autogen</strong> excels in generating code and ease of securing data execution.</li>
-<li><strong>LangGraph</strong> offers greater customization and control, making it ideal for developer-heavy teams.</li>
-</ul>
-<h2 id="applications-and-use-cases">Applications and Use Cases</h2>
-<p>Understanding where each framework excels:</p>
-<ul>
-<li><strong>CrewAI</strong> is suitable for simple agent tasks with less critical performance.</li>
-<li><strong>Autogen</strong> is favored for rapid prototyping and deployment in various environments.</li>
-<li><strong>LangGraph</strong> fits projects that require detailed control and customization, appealing to experienced development teams.</li>
-</ul>
-<h2 id="conclusion">Conclusion</h2>
-<p>Selecting the right agent framework depends heavily on your specific needs and team capabilities. </p>
-<p>The insights gathered from the video provide a great foundation for understanding the complexities involved in choosing the right agent technology.</p>
-<p>For further insights, watch the full video: </p>
-<p><a href="https://youtu.be/1zRyGq08ZcM?si=Mm9VM6_IZKTpZ_1X"><img src="images/thumbnail-crewai.png" alt="1- CrewAI evaluation"></a></p>
-<p><a href="https://youtu.be/42TUwgEg94Y?si=Ca9mLfKNWAFn0VCr"><img src="images/langgraph-thumbnail.png" alt="2 - LangGraph evaluation"></a></p>
-<p><a href="https://youtu.be/iKM3isuTpiI?si=iHzvcHhLHzeEYEi0"><img src="images/ag-thumbnail.png" alt="3 - AutoGen"></a></p>
-<p><a href="https://youtu.be/ChTx278XJAM?si=lch2qA3y6xzEJYYu"><img src="images/final-thumbnail.png" alt="4 - Final comparison"></a></p>
-<p>Access the full code on <a href="https://github.com/fbellame/agent-comparison/tree/master/stock-analysis">GitHub</a></p>
-<h2 id="more-about-me">More about me</h2>
-<p>Passionate about Generative AI since the launch of ChatGPT in November 2022, I enthusiastically explore the capabilities of this transformative technology. I blog, speak at conferences, <a href="https://www.meetup.com/generative-ai-montreal/">co-organize a local Generative AI meetup in Montreal</a>, and run a small <a href="https://www.youtube.com/@faridautomatic">YouTube channel</a> dedicated to these experiments. </p>
-<p>Feel free to connect with me on LinkedIn!</p>
-<p><a href="https://www.linkedin.com/in/farid-bellameche-6606332/"><img src="images/farid.png" alt="Farid Bellameche"></a></p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Frameworks Comparison</title>
+    <style>
+        :root {
+            --neon-pink: #ff00ff;
+            --neon-blue: #00ffff;
+            --neon-purple: #9d00ff;
+            --dark-bg: #0a0a0a;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: #fff;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            margin-top: 2em;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            text-align: center;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px var(--neon-blue),
+                           0 0 20px var(--neon-blue),
+                           0 0 30px var(--neon-pink);
+            }
+            to {
+                text-shadow: 0 0 20px var(--neon-blue),
+                           0 0 30px var(--neon-blue),
+                           0 0 40px var(--neon-pink);
+            }
+        }
+
+        a {
+            color: var(--neon-pink);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--neon-purple);
+            text-shadow: 0 0 10px var(--neon-purple);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+        }
+
+        img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
+        }
+
+        .framework-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+        }
+
+        .framework-card:hover {
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        ul li::before {
+            content: "►";
+            color: var(--neon-pink);
+            margin-right: 10px;
+        }
+
+        hr {
+            border: none;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+            margin: 40px 0;
+        }
+
+        .rating {
+            color: var(--neon-pink);
+            font-size: 1.2em;
+        }
+
+        code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--neon-pink);
+        }
+
+        blockquote {
+            border-left: 4px solid var(--neon-blue);
+            margin: 20px 0;
+            padding-left: 20px;
+            color: #ccc;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>A short comparison of popular Agent Frameworks</h1>
+        
+        <div class="framework-card">
+            <h2>Understanding the rise of Agent Frameworks in 2025</h2>
+            <p>The next wave of AI is agentic, a sweeping tide reshaping the shores of technology and human interaction. Like a powerful current, it pulls everything in its path, transforming how we make decisions, solve problems, and navigate our lives.</p>
+        </div>
+
+        <h2>Why Agent Frameworks matter</h2>
+        <p>As artificial intelligence continues to transform industries, <strong>agent frameworks</strong> are emerging as a game-changer in <strong>2025</strong>.</p>
+
+        <div class="framework-card">
+            <h3>Large Language Model (LLM)</h3>
+            <h4>Definition</h4>
+            <p>A <strong>Large Language Model</strong> (like ChatGPT) is a pre-trained neural network that processes and generates human-like text. It uses large datasets to understand language patterns and context.</p>
+        </div>
+
+        <div class="framework-card">
+            <h3>Agent Framework</h3>
+            <h4>Definition</h4>
+            <p>An <strong>Agent Framework</strong> is a system or library designed to orchestrate <strong>multiple agents</strong>, including LLMs, APIs, or custom logic, for performing <strong>complex, multi-step tasks</strong> in an automated and collaborative manner.</p>
+        </div>
+
+        <h2>Frameworks Overview</h2>
+        
+        <div class="framework-card">
+            <h3>CrewAI</h3>
+            <img src="images/crewai-logo.png" alt="CrewAI Logo">
+            <ul>
+                <li>Based on <strong>LangGraph</strong></li>
+                <li>Released in <strong>2024</strong></li>
+                <li>Raised <strong>$18M</strong> in funding</li>
+                <li>Features <strong>role-based</strong> agents</li>
+            </ul>
+            <div class="rating">
+                Ease of Use: ⭐⭐⭐⭐<br>
+                Performance: ⭐⭐<br>
+                Deployment: ⭐<br>
+                User Interface: ⭐
+            </div>
+        </div>
+
+        <div class="framework-card">
+            <h3>AutoGen</h3>
+            <img src="images/autogen-logo.png" alt="AutoGen Logo">
+            <ul>
+                <li>Backed by Microsoft</li>
+                <li>36k+ GitHub Stars</li>
+                <li>Supports Python and .NET</li>
+            </ul>
+            <div class="rating">
+                Ease of Use: ⭐⭐⭐<br>
+                Performance: ⭐⭐⭐⭐<br>
+                Deployment: ⭐⭐⭐<br>
+                User Interface: ⭐⭐⭐
+            </div>
+        </div>
+
+        <div class="framework-card">
+            <h3>LangGraph</h3>
+            <img src="images/langgraph-logo.png" alt="LangGraph Logo">
+            <ul>
+                <li>Based on LangChain</li>
+                <li>7k+ GitHub Stars</li>
+                <li>Focus on stateful orchestration</li>
+            </ul>
+            <div class="rating">
+                Ease of Use: ⭐<br>
+                Performance: ⭐⭐⭐<br>
+                Deployment: ⭐⭐⭐⭐<br>
+                User Interface: ⭐⭐
+            </div>
+        </div>
+
+        <h2>About Me</h2>
+        <div class="framework-card">
+            <img src="images/farid.png" alt="Farid Bellameche" style="max-width: 200px; border-radius: 50%;">
+            <p>Passionate about Generative AI since the launch of ChatGPT in November 2022, I enthusiastically explore the capabilities of this transformative technology. I blog, speak at conferences, <a href="https://www.meetup.com/generative-ai-montreal/">co-organize a local Generative AI meetup in Montreal</a>, and run a small <a href="https://www.youtube.com/@faridautomatic">YouTube channel</a> dedicated to these experiments.</p>
+        </div>
+    </div>
+</body>
+</html>
