@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agent Frameworks Comparison</title>
+    <title>Farid's Tech Blog</title>
     <style>
         :root {
             --neon-pink: #ff00ff;
@@ -174,148 +174,81 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .blog-card {
+            height: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .blog-card a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .blog-card h2 {
+            margin-top: 20px;
+            font-size: 1.8em;
+        }
+
+        .read-more {
+            color: var(--neon-pink);
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .about-section {
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .about-section img {
+            margin: 20px auto;
+        }
+
+        @media (max-width: 768px) {
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>A short comparison of popular Agent Frameworks</h1>
+        <h1>Farid's Tech Blog</h1>
         
-        <div class="framework-card">
-            <h2>Understanding the rise of Agent Frameworks in 2025</h2>
-            <p>The next wave of AI is agentic, a sweeping tide reshaping the shores of technology and human interaction. Like a powerful current, it pulls everything in its path, transforming how we make decisions, solve problems, and navigate our lives.</p>
-            <p>Sources:</p>
-            <ul>
-                <li><a href="https://www.reuters.com/technology/artificial-intelligence/autonomous-agents-profitability-dominate-ai-agenda-2025-executives-forecast-2024-12-12/">Reuters: Autonomous agents and profitability to dominate AI agenda in 2025</a></li>
-                <li><a href="https://www.ft.com/content/30677465-33bb-4f74-a8e6-239980091f7a">Financial Times: AI assistants in 2025</a></li>
-            </ul>
-        </div>
-
-        <h2>Key Differences</h2>
-        <div class="framework-card">
-            <img src="images/llm-agent-comparison.png" alt="comparison LLM vs Agent">
-        </div>
-
-        <h2>Use Case Example</h2>
-        <div class="use-case">
-            <h4>Objective</h4>
-            <p>To provide a <strong>rating (1-10)</strong> for a stock by combining:</p>
-            <ol>
-                <li><strong>Yahoo Finance data</strong>: Quantitative financial metrics</li>
-                <li><strong>Warren Buffett's investment principles</strong>: Qualitative evaluation for long-term value investing</li>
-            </ol>
-
-            <div class="workflow">
-                <h4>Workflow</h4>
-                <ol>
-                    <li><strong>Data Collection</strong>:
-                        <ul>
-                            <li>Gather financial data from Yahoo Finance</li>
-                            <li>Apply Buffett's principles to evaluate qualitative aspects</li>
-                        </ul>
-                    </li>
-                    <li><strong>Analysis</strong>:
-                        <ul>
-                            <li>Combine quantitative metrics with qualitative insights</li>
-                            <li>Assign weights to each factor</li>
-                        </ul>
-                    </li>
-                    <li><strong>Scoring</strong>:
-                        <ul>
-                            <li>Develop a formula to compute a final score (1-10)</li>
-                        </ul>
-                    </li>
-                </ol>
-            </div>
-        </div>
-
-        <h2>Framework Comparisons</h2>
-        
-        <div class="framework-card">
-            <h3>CrewAI</h3>
-            <a href="https://www.crewai.com/">
-                <img src="images/crewai-logo.png" alt="CrewAI Logo">
-            </a>
-            <p>A popular open source Agent framework with more than 23k ⭐ on <a href="https://github.com/crewAIInc/crewAI">GitHub</a></p>
-            <div class="rating">
-                Ease of Use: ⭐⭐⭐⭐<br>
-                Performance: ⭐⭐<br>
-                Deployment: ⭐<br>
-                User Interface: ⭐
-            </div>
-            <a href="https://youtu.be/6Tpm8ZLQEj0">
-                <img src="images/crewai-usecase.png" alt="CrewAI use case">
-            </a>
-        </div>
-
-        <div class="framework-card">
-            <h3>AutoGen</h3>
-            <a href="https://microsoft.github.io/autogen/0.2/">
-                <img src="images/autogen-logo.png" alt="AutoGen Logo">
-            </a>
-            <p>Backed by Microsoft with more than 36k ⭐ on <a href="https://github.com/microsoft/autogen">GitHub</a></p>
-            <div class="rating">
-                Ease of Use: ⭐⭐⭐<br>
-                Performance: ⭐⭐⭐⭐<br>
-                Deployment: ⭐⭐⭐<br>
-                User Interface: ⭐⭐⭐
-            </div>
-            <a href="https://youtu.be/Lbw6F-ei3yo">
-                <img src="images/autogen-usecase.png" alt="AutoGen use case">
-            </a>
-        </div>
-
-        <div class="framework-card">
-            <h3>LangGraph</h3>
-            <a href="https://www.langchain.com/langgraph">
-                <img src="images/langgraph-logo.png" alt="LangGraph Logo">
-            </a>
-            <p>Built on LangChain with 7k+ ⭐ on <a href="https://github.com/langchain-ai/langgraph">GitHub</a></p>
-            <div class="rating">
-                Ease of Use: ⭐<br>
-                Performance: ⭐⭐⭐<br>
-                Deployment: ⭐⭐⭐⭐<br>
-                User Interface: ⭐⭐
-            </div>
-            <a href="https://youtu.be/w2CPSHuwrGw">
-                <img src="images/langgraph-usecase.png" alt="LangGraph use case">
-            </a>
-        </div>
-
-        <h2>Video Tutorials</h2>
-        <div class="video-grid">
-            <div class="video-card">
-                <a href="https://youtu.be/6Tpm8ZLQEj0">
-                    <img src="images/thumbnail-crewai.png" alt="CrewAI evaluation">
-                    <h4>CrewAI Evaluation</h4>
+        <div class="blog-grid">
+            <div class="framework-card blog-card">
+                <a href="blog-agent-comparison.html">
+                    <img src="images/llm-agent-comparison.png" alt="Agent Frameworks Comparison">
+                    <h2>Agent Frameworks Comparison</h2>
+                    <p>A comprehensive comparison of popular Agent Frameworks including CrewAI, AutoGen, and LangGraph. Explore their features, pros, and cons.</p>
+                    <div class="read-more">Read More →</div>
                 </a>
             </div>
-            <div class="video-card">
-                <a href="https://youtu.be/w2CPSHuwrGw">
-                    <img src="images/langgraph-thumbnail.png" alt="LangGraph evaluation">
-                    <h4>LangGraph Evaluation</h4>
-                </a>
-            </div>
-            <div class="video-card">
-                <a href="https://youtu.be/Lbw6F-ei3yo">
-                    <img src="images/ag-thumbnail.png" alt="AutoGen">
-                    <h4>AutoGen Deep Dive</h4>
-                </a>
-            </div>
-            <div class="video-card">
-                <a href="https://youtu.be/Kd0RYEGT_FA">
-                    <img src="images/agent-comp-us-mini.png" alt="Final comparison">
-                    <h4>Final Comparison</h4>
+
+            <div class="framework-card blog-card">
+                <a href="blog-vibe-coding.html">
+                    <img src="images/vibe-coding.png" alt="Vibe Coding">
+                    <h2>Vibe Check: Decoding the Hype</h2>
+                    <p>Exploring the concept of 'Vibe Coding', its benefits, risks, and how to find the right balance between intuition and engineering practices.</p>
+                    <div class="read-more">Read More →</div>
                 </a>
             </div>
         </div>
 
-        <h2>Code Access</h2>
-        <div class="framework-card">
-            <p>Access the full code on <a href="https://github.com/fbellame/agent-comparison/tree/master/stock-analysis">GitHub</a></p>
-        </div>
-
-        <h2>About Me</h2>
-        <div class="framework-card">
+        <div class="framework-card about-section">
+            <h2>About Me</h2>
             <img src="images/farid.png" alt="Farid Bellameche" style="max-width: 200px; border-radius: 50%;">
             <p>Passionate about Generative AI since the launch of ChatGPT in November 2022, I enthusiastically explore the capabilities of this transformative technology. I blog, speak at conferences, <a href="https://www.meetup.com/generative-ai-montreal/">co-organize a local Generative AI meetup in Montreal</a>, and run a small <a href="https://www.youtube.com/@faridautomatic">YouTube channel</a> dedicated to these experiments.</p>
             <p>Feel free to connect with me on <a href="https://www.linkedin.com/in/farid-bellameche-6606332/">LinkedIn</a>!</p>
