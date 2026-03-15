@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rapport exécutif — IA générative à fort ROI pour Ellio</title>
+<style>
+  :root {
+    --primary: #1a3a4a;
+    --accent: #2a9d8f;
+    --accent-light: #e0f5f1;
+    --warn: #e76f51;
+    --warn-light: #fce8e3;
+    --blue: #264653;
+    --gold: #e9c46a;
+    --gold-light: #fdf6e3;
+    --grey-50: #f8f9fa;
+    --grey-100: #e9ecef;
+    --grey-200: #dee2e6;
+    --grey-600: #6c757d;
+    --grey-800: #343a40;
+    --radius: 10px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--grey-800);
+    background: #fff;
+    line-height: 1.6;
+    font-size: 15px;
+  }
+  @media print {
+    body { font-size: 12px; }
+    .page-break { page-break-before: always; }
+    .no-print { display: none !important; }
+    .cover { min-height: auto; padding: 60px 40px; }
+    section { padding: 30px 40px; }
+  }
+
+  /* Cover */
+  .cover {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--primary) 0%, #264653 60%, var(--accent) 100%);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 60px;
+  }
+  .cover .tag {
+    display: inline-block;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 20px;
+    padding: 6px 18px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+  }
+  .cover h1 {
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    max-width: 700px;
+  }
+  .cover .subtitle {
+    font-size: 20px;
+    opacity: .85;
+    max-width: 600px;
+    margin-bottom: 50px;
+    font-weight: 300;
+  }
+  .cover .meta {
+    display: flex;
+    gap: 40px;
+    font-size: 14px;
+    opacity: .7;
+  }
+  .cover .meta strong { display: block; opacity: 1; font-weight: 600; }
+
+  /* Sections */
+  section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 40px;
+  }
+  section + section { border-top: 1px solid var(--grey-200); }
+  h2 {
+    font-size: 28px;
+    color: var(--primary);
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  h2 .num {
+    color: var(--accent);
+    font-weight: 400;
+    margin-right: 6px;
+  }
+  .section-intro {
+    color: var(--grey-600);
+    font-size: 16px;
+    margin-bottom: 32px;
+    max-width: 750px;
+  }
+  h3 {
+    font-size: 20px;
+    color: var(--primary);
+    margin: 30px 0 12px;
+    font-weight: 600;
+  }
+  p { margin-bottom: 14px; }
+  ul { margin: 0 0 16px 20px; }
+  li { margin-bottom: 6px; }
+
+  /* Org profile */
+  .org-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .org-card {
+    background: var(--grey-50);
+    border: 1px solid var(--grey-200);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+  }
+  .org-card h4 {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    color: var(--accent);
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  .org-card p, .org-card li { font-size: 14px; margin-bottom: 4px; }
+
+  /* Executive summary boxes */
+  .exec-box {
+    background: var(--grey-50);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+  }
+  .exec-box.warn { border-left-color: var(--warn); background: var(--warn-light); }
+  .exec-box.gold { border-left-color: var(--gold); background: var(--gold-light); }
+  .exec-box h4 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: var(--primary);
+  }
+
+  /* Priority cards */
+  .priority-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 24px 0;
+  }
+  .priority-card {
+    border: 2px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 24px;
+    background: #fff;
+    position: relative;
+  }
+  .priority-card .badge {
+    position: absolute;
+    top: -12px;
+    left: 20px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+  .priority-card h4 {
+    font-size: 17px;
+    color: var(--primary);
+    margin: 6px 0 8px;
+  }
+  .priority-card p { font-size: 14px; color: var(--grey-600); }
+  .score-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .score-pill {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+  .score-pill.value { background: var(--accent-light); color: #1a7a6e; }
+  .score-pill.complexity { background: var(--warn-light); color: #c45a3e; }
+
+  /* Matrix visualization */
+  .matrix-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    height: 520px;
+    margin: 30px auto;
+    border-left: 2px solid var(--grey-800);
+    border-bottom: 2px solid var(--grey-800);
+  }
+  .matrix-container .axis-label {
+    position: absolute;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+  .matrix-container .axis-label.y {
+    top: 50%;
+    left: -50px;
+    transform: rotate(-90deg) translateX(50%);
+    transform-origin: left center;
+  }
+  .matrix-container .axis-label.x {
+    bottom: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .matrix-quadrant {
+    position: absolute;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(0,0,0,.35);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+  .q-topleft {
+    top: 0; left: 0;
+    width: 50%; height: 50%;
+    background: rgba(42, 157, 143, .08);
+  }
+  .q-topright {
+    top: 0; right: 0;
+    width: 50%; height: 50%;
+    background: rgba(233, 196, 106, .12);
+  }
+  .q-bottomleft {
+    bottom: 0; left: 0;
+    width: 50%; height: 50%;
+    background: rgba(108, 117, 125, .06);
+  }
+  .q-bottomright {
+    bottom: 0; right: 0;
+    width: 50%; height: 50%;
+    background: rgba(231, 111, 81, .08);
+  }
+  .dot {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    cursor: default;
+    z-index: 2;
+    transition: transform .2s;
+    box-shadow: 0 2px 6px rgba(0,0,0,.2);
+  }
+  .dot:hover { transform: scale(1.3); z-index: 10; }
+  .dot.priority { background: var(--accent); }
+  .dot.medium { background: var(--gold); color: var(--grey-800); }
+  .dot.explore { background: var(--warn); }
+  .dot.watch { background: var(--grey-600); }
+  .dot-tooltip {
+    display: none;
+    position: absolute;
+    bottom: 38px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    white-space: nowrap;
+    z-index: 100;
+    pointer-events: none;
+  }
+  .dot:hover .dot-tooltip { display: block; }
+
+  /* Full catalog table */
+  .catalog-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 20px 0;
+  }
+  .catalog-table th {
+    background: var(--primary);
+    color: #fff;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+  }
+  .catalog-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--grey-200);
+    vertical-align: top;
+  }
+  .catalog-table tr:nth-child(even) { background: var(--grey-50); }
+  .catalog-table .bar {
+    display: inline-block;
+    height: 8px;
+    border-radius: 4px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .catalog-table .bar.val { background: var(--accent); }
+  .catalog-table .bar.cx { background: var(--warn); }
+
+  /* Use case detail cards */
+  .uc-detail {
+    border: 1px solid var(--grey-200);
+    border-radius: var(--radius);
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .uc-detail-header {
+    background: var(--grey-50);
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid var(--grey-200);
+  }
+  .uc-detail-header .uc-num {
+    background: var(--primary);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .uc-detail-header .uc-num.prio { background: var(--accent); }
+  .uc-detail-header h4 { font-size: 16px; color: var(--primary); }
+  .uc-detail-header .uc-domain {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--grey-600);
+    text-align: right;
+  }
+  .uc-detail-body {
+    padding: 20px 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .uc-detail-body .full { grid-column: 1 / -1; }
+  .uc-field label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .uc-field p, .uc-field li { font-size: 13px; }
+  .uc-field ul { margin-left: 16px; }
+  .scores-grid {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .score-tag {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+  }
+  .score-tag.v { background: var(--accent-light); color: #1a7a6e; }
+  .score-tag.c { background: var(--warn-light); color: #c45a3e; }
+
+  /* Roadmap */
+  .roadmap {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    margin: 24px 0;
+  }
+  .roadmap-phase {
+    border-radius: var(--radius);
+    padding: 24px;
+    border: 1px solid var(--grey-200);
+  }
+  .roadmap-phase.p1 { border-top: 4px solid var(--accent); }
+  .roadmap-phase.p2 { border-top: 4px solid var(--gold); }
+  .roadmap-phase.p3 { border-top: 4px solid var(--warn); }
+  .roadmap-phase h4 {
+    font-size: 14px;
+    margin-bottom: 4px;
+    color: var(--primary);
+  }
+  .roadmap-phase .timeline {
+    font-size: 12px;
+    color: var(--grey-600);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  .roadmap-phase li { font-size: 13px; }
+
+  /* Footer */
+  .report-footer {
+    text-align: center;
+    padding: 40px;
+    color: var(--grey-600);
+    font-size: 13px;
+    border-top: 1px solid var(--grey-200);
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 16px 0;
+    font-size: 13px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .legend-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* TOC */
+  .toc { margin: 24px 0; }
+  .toc a {
+    display: block;
+    padding: 8px 0;
+    color: var(--primary);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--grey-200);
+    font-size: 15px;
+  }
+  .toc a:hover { color: var(--accent); }
+  .toc a span { color: var(--accent); font-weight: 600; margin-right: 8px; }
+</style>
+</head>
+<body>
+
+<!-- ============ COVER ============ -->
+<div class="cover">
+  <div class="tag">Rapport exécutif</div>
+  <h1>IA générative à fort ROI pour Ellio</h1>
+  <p class="subtitle">Portefeuille de 20 cas d'usage en intelligence artificielle générative, priorisés par valeur et complexité, pour accélérer la croissance et la capacité de livraison d'Ellio.</p>
+  <div class="meta">
+    <div><strong>Organisation</strong> Ellio</div>
+    <div><strong>Secteur</strong> Services-conseil en durabilité</div>
+    <div><strong>Date</strong> 15 mars 2026</div>
+    <div><strong>Cas d'usage</strong> 20 cas évalués</div>
+  </div>
+</div>
+
+<!-- ============ TABLE OF CONTENTS ============ -->
+<section>
+  <h2>Table des matières</h2>
+  <nav class="toc">
+    <a href="#org"><span>01</span> Profil d'Ellio</a>
+    <a href="#exec"><span>02</span> Synthèse exécutive</a>
+    <a href="#priority"><span>03</span> Cas d'usage prioritaires</a>
+    <a href="#matrix"><span>04</span> Matrice de priorisation valeur / complexité</a>
+    <a href="#catalog"><span>05</span> Catalogue complet des 20 cas d'usage</a>
+    <a href="#details"><span>06</span> Fiches détaillées</a>
+    <a href="#roadmap"><span>07</span> Feuille de route recommandée</a>
+    <a href="#risks"><span>08</span> Risques et gouvernance</a>
+    <a href="#next"><span>09</span> Prochaines étapes</a>
+  </nav>
+</section>
+
+<!-- ============ 01 ORG PROFILE ============ -->
+<section id="org" class="page-break">
+  <h2><span class="num">01</span> Profil d'Ellio</h2>
+  <p class="section-intro">Cabinet de conseil en développement durable, transition climatique, prospective et économie régénérative, basé à Montréal.</p>
+
+  <div class="org-grid">
+    <div class="org-card">
+      <h4>Identité</h4>
+      <p><strong>Nom :</strong> Ellio</p>
+      <p><strong>Secteur :</strong> Services</p>
+      <p><strong>Effectif :</strong> 10 à 19 employés</p>
+      <p><strong>CA estimé :</strong> 1 M$ à 5 M$ US</p>
+      <p><strong>Siège :</strong> Montréal</p>
+      <p><strong>Fondée :</strong> 2013 (fusion d'Ellipsos, Optim Ressources et Ethisolutions)</p>
+    </div>
+    <div class="org-card">
+      <h4>Produits et services</h4>
+      <ul>
+        <li>Accompagnement stratégique ESG et développement durable</li>
+        <li>Mesure d'impact et reddition de comptes</li>
+        <li>Empreinte carbone, ACV, certifications écoresponsables</li>
+        <li>Mobilisation des parties prenantes et facilitation</li>
+        <li>Conduite du changement et plans d'action DD</li>
+        <li>Tourisme responsable et durable, parcours Biosphere</li>
+        <li>Programmes entrepreneuriaux transition durable</li>
+      </ul>
+    </div>
+    <div class="org-card">
+      <h4>Défis principaux</h4>
+      <ul>
+        <li>Démontrer un ROI tangible des démarches ESG</li>
+        <li>Convertir les obligations réglementaires en plans d'action</li>
+        <li>Accéder à des données fiables chez les clients</li>
+        <li>Maintenir une différenciation forte sur un marché concurrentiel</li>
+        <li>Accompagner des transformations complexes multi-acteurs</li>
+        <li>Faire face à l'évolution rapide des normes et cadres ESG</li>
+      </ul>
+    </div>
+    <div class="org-card">
+      <h4>Objectifs stratégiques</h4>
+      <ul>
+        <li>Accélérer la transition durable des organisations clientes</li>
+        <li>Structurer des stratégies ESG et plans climat crédibles</li>
+        <li>Mesurer l'impact de façon rigoureuse</li>
+        <li>Renforcer l'engagement des parties prenantes</li>
+        <li>Développer des approches régénératives</li>
+        <li>Étendre l'accompagnement de la stratégie à l'implémentation</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 EXECUTIVE SUMMARY ============ -->
+<section id="exec" class="page-break">
+  <h2><span class="num">02</span> Synthèse exécutive</h2>
+  <p class="section-intro">Vue d'ensemble des conclusions pour la direction générale d'Ellio.</p>
+
+  <div class="exec-box">
+    <h4>Constat principal</h4>
+    <p>Le portefeuille de cas d'usage confirme qu'Ellio peut obtenir un <strong>ROI rapide et réaliste</strong> avec l'IA générative, à condition de cibler des usages de copilote alignés avec son modèle de cabinet de conseil : veille, synthèse, lecture critique, rédaction et personnalisation. Les quatre cas prioritaires forment la meilleure première vague : <strong>veille réglementaire ESG</strong>, <strong>analyse d'appels d'offres</strong>, <strong>propositions commerciales sur mesure</strong> et <strong>veille subventions</strong>.</p>
+  </div>
+
+  <div class="exec-box gold">
+    <h4>Recommandation centrale</h4>
+    <p>Ne pas disperser les efforts. Lancer un <strong>pilote de 90 jours</strong> sur une <strong>plateforme d'IA entreprise unique</strong>, avec un corpus documentaire validé, quelques prompts standardisés, une gouvernance stricte et des KPI simples. Si les résultats sont au rendez-vous, ce socle pourra ensuite soutenir des usages adjacents à fort levier.</p>
+  </div>
+
+  <div class="exec-box">
+    <h4>Effet de levier</h4>
+    <p>Les quatre cas prioritaires partagent environ <strong>80 % des mêmes fondations</strong> : accès sécurisé à des sources approuvées, bibliothèque de prompts, gabarits de sortie, glossaire ESG bilingue et règles de validation. Un seul socle peut soutenir plusieurs gains rapides.</p>
+  </div>
+
+  <div class="exec-box warn">
+    <h4>Risques transversaux</h4>
+    <p>Hallucinations sur des clauses, critères ou interprétations ESG. Confidentialité des documents clients. Obsolescence rapide des sources réglementaires. Surstandardisation des réponses affaiblissant la différenciation. Surconfiance des consultants face à des réponses convaincantes mais insuffisamment sourcées.</p>
+  </div>
+
+  <h3>Lecture stratégique du portefeuille</h3>
+  <p>La concentration de valeur porte sur les usages <strong>documentaires, cognitifs et commerciaux</strong>. Quatre blocs émergent :</p>
+  <ul>
+    <li><strong>Veille et interprétation experte</strong> — veille réglementaire, FAQ interne normes ESG, veille subventions</li>
+    <li><strong>Accélération commerciale</strong> — analyse d'appels d'offres, propositions sur mesure, préparation de rendez-vous</li>
+    <li><strong>Industrialisation de la livraison</strong> — comptes rendus, synthèse d'entretiens, rédaction assistée, dossiers de certification</li>
+    <li><strong>Capitalisation interne</strong> — réemploi des livrables, onboarding méthodologique, localisation bilingue</li>
+  </ul>
+  <p>Cette répartition est favorable à une petite entreprise : l'essentiel repose sur un copilote sécurisé, un corpus documentaire bien choisi, des prompts standardisés et une revue humaine disciplinée — <strong>sans transformation SI lourde</strong>.</p>
+</section>
+
+<!-- ============ 03 PRIORITY USE CASES ============ -->
+<section id="priority" class="page-break">
+  <h2><span class="num">03</span> Cas d'usage prioritaires</h2>
+  <p class="section-intro">Les quatre cas offrant le meilleur compromis entre rapidité de mise en œuvre, visibilité du ROI et cohérence stratégique.</p>
+
+  <div class="priority-cards">
+    <div class="priority-card">
+      <div class="badge">Priorité 1</div>
+      <h4>Veille réglementaire ESG copilote</h4>
+      <p>Copilot connecté aux sources réglementaires pour résumer les changements ESG/climat/divulgation et produire des alertes actionnables.</p>
+      <div class="score-row">
+        <span class="score-pill value">Valeur : 168</span>
+        <span class="score-pill complexity">Complexité : 30</span>
+      </div>
+      <p style="margin-top:10px;font-size:13px;"><strong>Impact :</strong> Ouvre une offre récurrente d'alertes commentées. Meilleur ratio valeur/complexité du portefeuille.</p>
+    </div>
+    <div class="priority-card">
+      <div class="badge">Priorité 2</div>
+      <h4>Analyse d'appels d'offres</h4>
+      <p>Assistant qui lit un cahier des charges, extrait les critères, construit une matrice de conformité et suggère le plan de réponse.</p>
+      <div class="score-row">
+        <span class="score-pill value">Valeur : 102</span>
+        <span class="score-pill complexity">Complexité : 30</span>
+      </div>
+      <p style="margin-top:10px;font-size:13px;"><strong>Impact :</strong> Réduit le temps go/no-go, améliore le taux de conformité des soumissions.</p>
+    </div>
+    <div class="priority-card">
+      <div class="badge">Priorité 3</div>
+      <h4>Propositions commerciales sur mesure</h4>
+      <p>Copilot commercial qui réutilise propositions gagnantes, expertises sectorielles et bios pour générer une première offre personnalisée.</p>
+      <div class="score-row">
+        <span class="score-pill value">Valeur : 110</span>
+        <span class="score-pill complexity">Complexité : 47</span>
+      </div>
+      <p style="margin-top:10px;font-size:13px;"><strong>Impact :</strong> Réduit de 30-50 % le temps du premier jet. Augmente la personnalisation sectorielle et la conversion.</p>
+    </div>
+    <div class="priority-card">
+      <div class="badge">Priorité 4</div>
+      <h4>Veille subventions et programmes climat</h4>
+      <p>Assistant qui résume programmes, subventions et appels à projets climat, puis prépare des fiches d'éligibilité et notes d'opportunité.</p>
+      <div class="score-row">
+        <span class="score-pill value">Valeur : 144</span>
+        <span class="score-pill complexity">Complexité : 42</span>
+      </div>
+      <p style="margin-top:10px;font-size:13px;"><strong>Impact :</strong> Relie ambitions ESG à des sources de financement concrètes. Augmente les mandats.</p>
+    </div>
+  </div>
+
+  <div class="exec-box">
+    <h4>Chaîne de valeur des quatre priorités</h4>
+    <p>Ensemble, ces cas dessinent une chaîne très pertinente pour Ellio : <strong>mieux détecter</strong> (veille réglementaire + subventions) &rarr; <strong>mieux qualifier</strong> (analyse d'appels d'offres) &rarr; <strong>mieux répondre</strong> (propositions sur mesure) &rarr; <strong>mieux monétiser</strong> l'expertise. Ce n'est pas seulement un gain de productivité — c'est une manière de transformer l'expertise en offres récurrentes et en meilleure vitesse commerciale.</p>
+  </div>
+</section>
+
+<!-- ============ 04 MATRIX ============ -->
+<section id="matrix" class="page-break">
+  <h2><span class="num">04</span> Matrice de priorisation valeur / complexité</h2>
+  <p class="section-intro">Positionnement des 20 cas d'usage. Axe horizontal = complexité (faible à gauche), axe vertical = valeur (forte en haut).</p>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div> Quick wins (haute valeur, faible complexité)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div> Valeur moyenne ou complexité modérée</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--warn)"></div> Projets stratégiques (haute valeur + haute complexité)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--grey-600)"></div> À surveiller</div>
+  </div>
+
+  <div class="matrix-container">
+    <div class="axis-label y">VALEUR &rarr;</div>
+    <div class="axis-label x">COMPLEXITÉ &rarr;</div>
+    <div class="matrix-quadrant q-topleft">Quick wins</div>
+    <div class="matrix-quadrant q-topright">Stratégiques</div>
+    <div class="matrix-quadrant q-bottomleft">Faciles</div>
+    <div class="matrix-quadrant q-bottomright">À évaluer</div>
+
+    <!-- Dots: left% = complexity normalized, bottom% = value normalized -->
+    <!-- Max value ~178, max complexity ~110. Normalize: left = (cx/120)*95+2, bottom = (val/190)*90+5 -->
+
+    <!-- 9. Veille reglementaire ESG - V168 C30 -->
+    <div class="dot priority" style="left:calc(30/120*95% + 2%); bottom:calc(168/190*90% + 5%);">9
+      <div class="dot-tooltip">Veille réglementaire ESG copilote<br>V:168 C:30</div>
+    </div>
+    <!-- 12. Analyse AO - V102 C30 -->
+    <div class="dot priority" style="left:calc(30/120*95% + 2%); bottom:calc(102/190*90% + 5%);">12
+      <div class="dot-tooltip">Analyse d'appels d'offres<br>V:102 C:30</div>
+    </div>
+    <!-- 11. Propositions commerciales - V110 C47 -->
+    <div class="dot priority" style="left:calc(47/120*95% + 2%); bottom:calc(110/190*90% + 5%);">11
+      <div class="dot-tooltip">Propositions commerciales sur mesure<br>V:110 C:47</div>
+    </div>
+    <!-- 1. Veille subventions - V144 C42 -->
+    <div class="dot priority" style="left:calc(42/120*95% + 2%); bottom:calc(144/190*90% + 5%);">1
+      <div class="dot-tooltip">Veille subventions et programmes climat<br>V:144 C:42</div>
+    </div>
+
+    <!-- 13. Scenarios prospectifs - V178 C102 -->
+    <div class="dot explore" style="left:calc(102/120*95% + 2%); bottom:calc(178/190*90% + 5%);">13
+      <div class="dot-tooltip">Scénarios prospectifs territoriaux<br>V:178 C:102</div>
+    </div>
+    <!-- 16. Business cases - V144 C110 -->
+    <div class="dot explore" style="left:calc(110/120*95% + 2%); bottom:calc(144/190*90% + 5%);">16
+      <div class="dot-tooltip">Business cases ESG orientés ROI<br>V:144 C:110</div>
+    </div>
+
+    <!-- 3. Dossiers certification - V123 C76 -->
+    <div class="dot medium" style="left:calc(76/120*95% + 2%); bottom:calc(123/190*90% + 5%);">3
+      <div class="dot-tooltip">Dossiers de certification accélérés<br>V:123 C:76</div>
+    </div>
+    <!-- 7. Diagnostic ESG - V110 C58 -->
+    <div class="dot medium" style="left:calc(58/120*95% + 2%); bottom:calc(110/190*90% + 5%);">7
+      <div class="dot-tooltip">Diagnostic ESG express<br>V:110 C:58</div>
+    </div>
+    <!-- 4. Thought leadership - V110 C68 -->
+    <div class="dot medium" style="left:calc(68/120*95% + 2%); bottom:calc(110/190*90% + 5%);">4
+      <div class="dot-tooltip">Thought leadership recyclé<br>V:110 C:68</div>
+    </div>
+    <!-- 18. Synthese entretiens - V110 C68 -->
+    <div class="dot medium" style="left:calc(68/120*95% + 2%); bottom:calc(113/190*90% + 5%);">18
+      <div class="dot-tooltip">Synthèse d'entretiens parties prenantes<br>V:110 C:68</div>
+    </div>
+
+    <!-- 15. Redaction rapports - V102 C87 -->
+    <div class="dot medium" style="left:calc(87/120*95% + 2%); bottom:calc(102/190*90% + 5%);">15
+      <div class="dot-tooltip">Rédaction assistée des rapports ESG<br>V:102 C:87</div>
+    </div>
+    <!-- 14. Reemploi livrables - V89 C65 -->
+    <div class="dot medium" style="left:calc(65/120*95% + 2%); bottom:calc(89/190*90% + 5%);">14
+      <div class="dot-tooltip">Réemploi intelligent des livrables<br>V:89 C:65</div>
+    </div>
+    <!-- 2. Localisation bilingue - V89 C39 -->
+    <div class="dot medium" style="left:calc(39/120*95% + 2%); bottom:calc(89/190*90% + 5%);">2
+      <div class="dot-tooltip">Localisation bilingue FR-EN<br>V:89 C:39</div>
+    </div>
+    <!-- 19. Collecte carbone - V89 C89 -->
+    <div class="dot medium" style="left:calc(89/120*95% + 2%); bottom:calc(89/190*90% + 5%);">19
+      <div class="dot-tooltip">Collecte de données carbone assistée<br>V:89 C:89</div>
+    </div>
+
+    <!-- 5. Comptes rendus - V76 C25 -->
+    <div class="dot watch" style="left:calc(25/120*95% + 2%); bottom:calc(76/190*90% + 5%);">5
+      <div class="dot-tooltip">Comptes rendus et plans d'action<br>V:76 C:25</div>
+    </div>
+    <!-- 8. Onboarding - V76 C31 -->
+    <div class="dot watch" style="left:calc(31/120*95% + 2%); bottom:calc(76/190*90% + 5%);">8
+      <div class="dot-tooltip">Onboarding méthodologique assisté<br>V:76 C:31</div>
+    </div>
+    <!-- 10. FAQ ESG - V76 C20 -->
+    <div class="dot watch" style="left:calc(20/120*95% + 2%); bottom:calc(76/190*90% + 5%);">10
+      <div class="dot-tooltip">FAQ interne normes ESG<br>V:76 C:20</div>
+    </div>
+    <!-- 17. Comites gouvernance - V76 C56 -->
+    <div class="dot watch" style="left:calc(56/120*95% + 2%); bottom:calc(76/190*90% + 5%);">17
+      <div class="dot-tooltip">Comités de gouvernance assistés<br>V:76 C:56</div>
+    </div>
+    <!-- 20. Ateliers climat - V76 C30 -->
+    <div class="dot watch" style="left:calc(30/120*95% + 2%); bottom:calc(79/190*90% + 5%);">20
+      <div class="dot-tooltip">Conception d'ateliers climat<br>V:76 C:30</div>
+    </div>
+    <!-- 6. Prep RDV - V68 C42 -->
+    <div class="dot watch" style="left:calc(42/120*95% + 2%); bottom:calc(68/190*90% + 5%);">6
+      <div class="dot-tooltip">Préparation de rendez-vous client<br>V:68 C:42</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 CATALOG TABLE ============ -->
+<section id="catalog" class="page-break">
+  <h2><span class="num">05</span> Catalogue complet des 20 cas d'usage</h2>
+  <p class="section-intro">Vue consolidée triée par ratio valeur/complexité décroissant.</p>
+
+  <table class="catalog-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Cas d'usage</th>
+        <th>Domaine</th>
+        <th>Valeur</th>
+        <th>Complexité</th>
+        <th>Ratio V/C</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>9</strong></td>
+        <td><strong>Veille réglementaire ESG copilote</strong></td>
+        <td>Conseil ESG / veille réglementaire</td>
+        <td><span class="bar val" style="width:84px"></span>168</td>
+        <td><span class="bar cx" style="width:22px"></span>30</td>
+        <td><strong>5.6</strong></td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td>FAQ interne normes ESG</td>
+        <td>Services-conseil ESG / gestion des connaissances</td>
+        <td><span class="bar val" style="width:38px"></span>76</td>
+        <td><span class="bar cx" style="width:15px"></span>20</td>
+        <td>3.8</td>
+      </tr>
+      <tr>
+        <td><strong>12</strong></td>
+        <td><strong>Analyse d'appels d'offres</strong></td>
+        <td>Développement commercial</td>
+        <td><span class="bar val" style="width:51px"></span>102</td>
+        <td><span class="bar cx" style="width:22px"></span>30</td>
+        <td><strong>3.4</strong></td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td><strong>Veille subventions et programmes climat</strong></td>
+        <td>Services-conseil climat / veille financement</td>
+        <td><span class="bar val" style="width:72px"></span>144</td>
+        <td><span class="bar cx" style="width:31px"></span>42</td>
+        <td><strong>3.4</strong></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>Comptes rendus et plans d'action</td>
+        <td>Suivi de mandats clients</td>
+        <td><span class="bar val" style="width:38px"></span>76</td>
+        <td><span class="bar cx" style="width:19px"></span>25</td>
+        <td>3.0</td>
+      </tr>
+      <tr>
+        <td>20</td>
+        <td>Conception d'ateliers climat</td>
+        <td>Mobilisation parties prenantes</td>
+        <td><span class="bar val" style="width:38px"></span>76</td>
+        <td><span class="bar cx" style="width:22px"></span>30</td>
+        <td>2.5</td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td>Veille réglementaire ESG copilote</td>
+        <td colspan="4" style="display:none"></td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td>Onboarding méthodologique assisté</td>
+        <td>Gestion des connaissances</td>
+        <td><span class="bar val" style="width:38px"></span>76</td>
+        <td><span class="bar cx" style="width:23px"></span>31</td>
+        <td>2.5</td>
+      </tr>
+      <tr>
+        <td><strong>11</strong></td>
+        <td><strong>Propositions commerciales sur mesure</strong></td>
+        <td>Avant-vente / conseil ESG</td>
+        <td><span class="bar val" style="width:55px"></span>110</td>
+        <td><span class="bar cx" style="width:35px"></span>47</td>
+        <td><strong>2.3</strong></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Localisation bilingue FR-EN</td>
+        <td>Production de contenus bilingues</td>
+        <td><span class="bar val" style="width:44px"></span>89</td>
+        <td><span class="bar cx" style="width:29px"></span>39</td>
+        <td>2.3</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>Diagnostic ESG express</td>
+        <td>Conseil ESG / diagnostic maturité</td>
+        <td><span class="bar val" style="width:55px"></span>110</td>
+        <td><span class="bar cx" style="width:43px"></span>58</td>
+        <td>1.9</td>
+      </tr>
+      <tr>
+        <td>13</td>
+        <td>Scénarios prospectifs territoriaux</td>
+        <td>Prospective territoriale / climat</td>
+        <td><span class="bar val" style="width:89px"></span>178</td>
+        <td><span class="bar cx" style="width:76px"></span>102</td>
+        <td>1.7</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>Préparation de rendez-vous client</td>
+        <td>Développement commercial</td>
+        <td><span class="bar val" style="width:34px"></span>68</td>
+        <td><span class="bar cx" style="width:31px"></span>42</td>
+        <td>1.6</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Dossiers de certification accélérés</td>
+        <td>Certifications ESG</td>
+        <td><span class="bar val" style="width:61px"></span>123</td>
+        <td><span class="bar cx" style="width:57px"></span>76</td>
+        <td>1.6</td>
+      </tr>
+      <tr>
+        <td>18</td>
+        <td>Synthèse d'entretiens parties prenantes</td>
+        <td>Conseil ESG / concertation</td>
+        <td><span class="bar val" style="width:55px"></span>110</td>
+        <td><span class="bar cx" style="width:51px"></span>68</td>
+        <td>1.6</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>Thought leadership recyclé</td>
+        <td>Marketing de contenu B2B</td>
+        <td><span class="bar val" style="width:55px"></span>110</td>
+        <td><span class="bar cx" style="width:51px"></span>68</td>
+        <td>1.6</td>
+      </tr>
+      <tr>
+        <td>14</td>
+        <td>Réemploi intelligent des livrables</td>
+        <td>Gestion des connaissances</td>
+        <td><span class="bar val" style="width:44px"></span>89</td>
+        <td><span class="bar cx" style="width:48px"></span>65</td>
+        <td>1.4</td>
+      </tr>
+      <tr>
+        <td>17</td>
+        <td>Comités de gouvernance assistés</td>
+        <td>Gouvernance de mandats</td>
+        <td><span class="bar val" style="width:38px"></span>76</td>
+        <td><span class="bar cx" style="width:42px"></span>56</td>
+        <td>1.4</td>
+      </tr>
+      <tr>
+        <td>16</td>
+        <td>Business cases ESG orientés ROI</td>
+        <td>Conseil ESG / climat</td>
+        <td><span class="bar val" style="width:72px"></span>144</td>
+        <td><span class="bar cx" style="width:82px"></span>110</td>
+        <td>1.3</td>
+      </tr>
+      <tr>
+        <td>15</td>
+        <td>Rédaction assistée des rapports ESG</td>
+        <td>Reddition de comptes ESG</td>
+        <td><span class="bar val" style="width:51px"></span>102</td>
+        <td><span class="bar cx" style="width:65px"></span>87</td>
+        <td>1.2</td>
+      </tr>
+      <tr>
+        <td>19</td>
+        <td>Collecte de données carbone assistée</td>
+        <td>Comptabilité carbone</td>
+        <td><span class="bar val" style="width:44px"></span>89</td>
+        <td><span class="bar cx" style="width:66px"></span>89</td>
+        <td>1.0</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ 06 DETAILED USE CASE CARDS ============ -->
+<section id="details" class="page-break">
+  <h2><span class="num">06</span> Fiches détaillées des cas d'usage</h2>
+  <p class="section-intro">Détail de chacun des 20 cas d'usage évalués pour Ellio.</p>
+
+  <!-- UC 9 - Veille reglementaire -->
+  <div class="uc-detail">
+    <div class="uc-detail-header">
+      <div class="uc-num prio">9</div>
+      <h4>Veille réglementaire ESG copilote</h4>
+      <div class="uc-domain">Conseil ESG / veille réglementaire</div>
+    </div>
+    <div class="uc-detail-body">
+      <div class="uc-field full">
+        <label>Description</label>
+        <p>Copilot de veille connecté aux sources réglementaires et notes internes pour résumer les changements ESG/climat/divulgation, puis produire des alertes client actionnables.</p>
+      </div>
+      <div class="uc-field">
+        <label>Scores de valeur</label>
+        <div class="scores-grid">
+          <span class="score-tag v">Valeur d'affaire : 100</span>
+          <span class="score-tag v">Urgence : 34</span>
+          <span class="score-tag v">Risque/Opportunité : 34</span>
+        </div>
+      </div>
+      <div class="uc-field">
+        <label>Scores de complexité</label>
+        <div class="scores-grid">
+          <span class="score-tag c">Maturité IA : 8</span>
+          <span class="score-tag c">Implantation : 8</span>
+          <span class="score-tag c">Conformité : 8</span>
+          <span class="score-tag c">Données : 3</span>
+          <span class="score-tag c">Changement : 3</span>
+        </div>
+      </div>
+      <div class="uc-field">
+        <label>Bénéfices attendus</label>
+        <ul>
+          <li>Réduit le temps de veille</li>
+          <li>Accélère la traduction des changements CSRD/ESRS</li>
+          <li>Améliore la qualité des livrables</li>
+          <li>Renforce la capacité de mandats</li>
+          <li>Ouvre une offre récurrente de veille</li>
+        </ul>
+      </div>
+      <div class="uc-field">
+        <label>KPI de suivi</label>
+        <ul>
+          <li>Heures de veille économisées / consultant / mois</li>
+          <li>Délai publication officielle &rarr; note d'impact</li>
+          <li>Taux de réutilisation des synthèses</li>
+        </ul>
+      </div>
+      <div class="uc-field">
+        <label>Risques</label>
+        <ul>
+          <li>Hallucinations sans sources</li>
+          <li>Exposition de documents sensibles</li>
+          <li>Surconfiance sans validation humaine</li>
+        </ul>
+      </div>
+      <div class="uc-field">
+        <label>Prochaines étapes</label>
+        <ul>
+          <li>Choisir un copilote entreprise</li>
+          <li>Lister 10-15 sources prioritaires</li>
+          <li>Piloter 6 semaines</li>
+          <li>Mesurer temps, qualité et offre récurrente</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- UC 12 - Analyse AO -->
+  <div class="uc-detail">
+    <div class="uc-detail-header">
+      <div class="uc-num prio">12</div>
+      <h4>Analyse d'appels d'offres</h4>
+      <div class="uc-domain">Développement commercial</div>
+    </div>
+    <div class="uc-detail-body">
+      <div class="uc-field full">
+        <label>Description</label>
+        <p>Assistant d'analyse d'AO qui lit un cahier des charges, extrait les critères, construit une matrice de conformité et suggère le plan de réponse.</p>
+      </div>
+      <div class="uc-field">
+        <label>Scores de valeur</label>
+        <div class="scores-grid">
+          <span class="score-tag v">Valeur d'affaire : 34</span>
+          <span class="score-tag v">Urgence : 34</span>
+          <span class="score-tag v">Risque/Opportunité : 34</span>
+        </div>
+      </div>
+      <div class="uc-field">
+        <label>Scores de complexité</label>
+        <div class="scores-grid">
+          <span class="score-tag c">Maturité IA : 8</span>
+          <span class="score-tag c">Implantation : 3</span>
+          <span class="score-tag c">Conformité : 8</span>
+          <span class="score-tag c">Données : 8</span>
+          <span class="score-tag c">Changement : 3</span>
+        </div>
+      </div>
+      <div class="uc-field">
+        <label>Bénéfices attendus</label>
+        <ul>
+          <li>Réduit le temps de lecture initiale</li>
+          <li>Améliore la qualité des analyses</li>
+          <li>Aide à traiter davantage d'opportunités</li>
+          <li>Diminue le risque d'oublier une exigence</li>
+          <li>Capitalise les propositions gagnantes</li>
+        </ul>
+      </div>
+      <div class="uc-field">
+        <label>KPI de suivi</label>
+        <ul>
+          <li>Temps moyen réception &rarr; décision go/no-go</li>
+          <li>Taux de conformité des soumissions</li>
+          <li>Taux de réussite sur AO ESG qualifiés</li>
+        </ul>
+      </div>
+      <div class="uc-field">
+        <label>Risques</label>
+        <ul>
+          <li>Hallucinations sur clauses/critères</li>
+          <li>Fuite d'information</li>
+          <li>Standardisation excessive</li>
+        </ul>
+      </div>
+      <div class="uc-field">
+        <label>Prochaines étapes</label>
+        <ul>
+          <li>Sélectionner 15-20 AO passés</li>
+          <li>Définir grille go/no-go et 5 prompts</li>
+          <li>Piloter 4 semaines</li>
+          <li>Mesurer gain de temps et qualité</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- UC 11 - Propositions commerciales -->
+  <div class="uc-detail">
+    <div class="uc-detail-header">
+      <div class="uc-num prio">11</div>
+      <h4>Propositions commerciales sur mesure</h4>
+      <div class="uc-domain">Avant-vente / conseil ESG</div>
+    </div>
+    <div class="uc-detail-body">
+      <div class="uc-field full">
+        <label>Description</label>
+        <p>Copilot commercial qui réutilise propositions gagnantes, expertises sectorielles et bios pour générer une première offre sur mesure.</p>
+      </div>
+      <div class="uc-field">
+        <label>Scores de valeur</label>
+        <div class="scores-grid">
+          <span class="score-tag v">Valeur d'affaire : 55</span>
+          <span class="score-tag v">Urgence : 21</span>
+          <span class="score-tag v">Risque/Opportunité : 34</span>
+        </div>
+      </div>
+      <div class="uc-field">
+        <label>Scores de complexité</label>
+        <div class="scores-grid">
+          <span class="score-tag c">Maturité IA : 5</span>
+          <span class="score-tag c">Implantation : 8</span>
+          <span class="score-tag c">Conformité : 13</span>
+          <span class="score-tag c">Données : 13</span>
+          <span class="score-tag c">Changement : 8</span>
+        </div>
+      </div>
+      <div class="uc-field">
+        <label>Bénéfices attendus</label>
+        <ul>
+          <li>Réduit de 30-50 % le temps de préparation du premier jet</li>
+          <li>Augmente la personnalisation sectorielle</li>
+          <li>Améliore la cohérence</li>
+          <li>Accélère les réponses bilingues</li>
+          <li>Renforce la différenciation</li>
+        </ul>
+      </div>
+      <div class="uc-field">
+        <label>KPI de suivi</label>
+        <ul>
+          <li>Temps moyen brief &rarr; première version</li>
+          <li>Taux de conversion et panier moyen</li>
+          <li>Part des propositions réutilisant des cas validés</li>
+        </ul>
+      </div>
+      <div class="uc-field">
+        <label>Risques</label>
+        <ul>
+          <li>Hallucinations sur références/livrables/délais</li>
+          <li>Uniformisation du style</li>
+          <li>Fuite d'informations confidentielles</li>
+        </ul>
+      </div>
+      <div class="uc-field">
+        <label>Prochaines étapes</label>
+        <ul>
+          <li>Sélectionner outil sécurisé</li>
+          <li>Rassembler 20-30 propositions gagnées</li>
+          <li>Construire bibliothèque de prompts</li>
+          <li>Lancer pilote 6 semaines</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- UC 1 - Veille subventions -->
+  <div class="uc-detail">
+    <div class="uc-detail-header">
+      <div class="uc-num prio">1</div>
+      <h4>Veille subventions et programmes climat</h4>
+      <div class="uc-domain">Services-conseil climat / veille financement</div>
+    </div>
+    <div class="uc-detail-body">
+      <div class="uc-field full">
+        <label>Description</label>
+        <p>Assistant de veille financement qui résume programmes, subventions et appels à projets climat, puis prépare des fiches d'éligibilité et des brouillons de note d'opportunité.</p>
+      </div>
+      <div class="uc-field">
+        <label>Scores de valeur</label>
+        <div class="scores-grid">
+          <span class="score-tag v">Valeur d'affaire : 55</span>
+          <span class="score-tag v">Urgence : 34</span>
+          <span class="score-tag v">Risque/Opportunité : 55</span>
+        </div>
+      </div>
+      <div class="uc-field">
+        <label>Scores de complexité</label>
+        <div class="scores-grid">
+          <span class="score-tag c">Maturité IA : 5</span>
+          <span class="score-tag c">Implantation : 13</span>
+          <span class="score-tag c">Conformité : 3</span>
+          <span class="score-tag c">Données : 13</span>
+          <span class="score-tag c">Changement : 8</span>
+        </div>
+      </div>
+      <div class="uc-field">
+        <label>Bénéfices attendus</label>
+        <ul>
+          <li>Réduit la veille manuelle</li>
+          <li>Accélère l'identification d'aides pertinentes</li>
+          <li>Améliore la qualité des propositions</li>
+          <li>Renforce la différenciation d'Ellio</li>
+          <li>Augmente les occasions de mandat</li>
+        </ul>
+      </div>
+      <div class="uc-field">
+        <label>KPI de suivi</label>
+        <ul>
+          <li>Heures de veille économisées / semaine / consultant</li>
+          <li>Nombre d'opportunités qualifiées</li>
+          <li>Taux d'alertes émises avant échéance</li>
+        </ul>
+      </div>
+      <div class="uc-field">
+        <label>Risques</label>
+        <ul>
+          <li>Hallucinations sur l'admissibilité</li>
+          <li>Surconfiance sans relecture humaine</li>
+          <li>Couverture incomplète si les URLs changent</li>
+        </ul>
+      </div>
+      <div class="uc-field">
+        <label>Prochaines étapes</label>
+        <ul>
+          <li>Inventorier 20-30 sources prioritaires</li>
+          <li>Définir prompts et gabarits</li>
+          <li>Piloter 6 semaines avec 2 consultants</li>
+          <li>Mesurer temps gagné et opportunités</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Remaining 16 use cases - compact format -->
+  <h3 style="margin-top:40px;">Autres cas d'usage évalués</h3>
+
+  <!-- UC 13 -->
+  <div class="uc-detail">
+    <div class="uc-detail-header"><div class="uc-num">13</div><h4>Scénarios prospectifs territoriaux</h4><div class="uc-domain">Prospective territoriale / climat</div></div>
+    <div class="uc-detail-body">
+      <div class="uc-field full"><label>Description</label><p>Copilot de prospective générant scénarios territoriaux, signaux faibles, risques, opportunités et questions d'atelier.</p></div>
+      <div class="uc-field"><label>Valeur / Complexité</label><div class="scores-grid"><span class="score-tag v">V: 178</span><span class="score-tag c">C: 102</span></div></div>
+      <div class="uc-field"><label>Bénéfices clés</label><p>Réduit le temps de veille et cadrage. Augmente la capacité de mandats. Améliore la qualité perçue des livrables.</p></div>
+    </div>
+  </div>
+
+  <!-- UC 16 -->
+  <div class="uc-detail">
+    <div class="uc-detail-header"><div class="uc-num">16</div><h4>Business cases ESG orientés ROI</h4><div class="uc-domain">Conseil ESG / climat</div></div>
+    <div class="uc-detail-body">
+      <div class="uc-field full"><label>Description</label><p>Assistant qui reformule une initiative ESG en argumentaire financier : coûts, hypothèses, co-bénéfices, risques évités, indicateurs de suivi.</p></div>
+      <div class="uc-field"><label>Valeur / Complexité</label><div class="scores-grid"><span class="score-tag v">V: 144</span><span class="score-tag c">C: 110</span></div></div>
+      <div class="uc-field"><label>Bénéfices clés</label><p>Réduit de 50-70 % le temps de préparation des argumentaires ROI. Standardise la qualité. Augmente le taux de conversion.</p></div>
+    </div>
+  </div>
+
+  <!-- UC 3 -->
+  <div class="uc-detail">
+    <div class="uc-detail-header"><div class="uc-num">3</div><h4>Dossiers de certification accélérés</h4><div class="uc-domain">Certifications ESG</div></div>
+    <div class="uc-detail-body">
+      <div class="uc-field full"><label>Description</label><p>Copilot de certification préparant la narration des preuves, check-list documentaire, pièces manquantes et reformulation selon le référentiel visé.</p></div>
+      <div class="uc-field"><label>Valeur / Complexité</label><div class="scores-grid"><span class="score-tag v">V: 123</span><span class="score-tag c">C: 76</span></div></div>
+      <div class="uc-field"><label>Bénéfices clés</label><p>Réduit le temps de consolidation. Augmente la capacité de mandats simultanés. Sécurise les échéances.</p></div>
+    </div>
+  </div>
+
+  <!-- UC 7 -->
+  <div class="uc-detail">
+    <div class="uc-detail-header"><div class="uc-num">7</div><h4>Diagnostic ESG express</h4><div class="uc-domain">Conseil ESG / diagnostic</div></div>
+    <div class="uc-detail-body">
+      <div class="uc-field full"><label>Description</label><p>Copilot de pré-diagnostic analysant les documents d'un prospect, proposant une lecture de maturité ESG et préparant un guide d'entretien.</p></div>
+      <div class="uc-field"><label>Valeur / Complexité</label><div class="scores-grid"><span class="score-tag v">V: 110</span><span class="score-tag c">C: 58</span></div></div>
+      <div class="uc-field"><label>Bénéfices clés</label><p>Réduit le temps de pré-diagnostic. Standardise les livrables. Améliore la réactivité commerciale.</p></div>
+    </div>
+  </div>
+
+  <!-- UC 4 -->
+  <div class="uc-detail">
+    <div class="uc-detail-header"><div class="uc-num">4</div><h4>Thought leadership recyclé</h4><div class="uc-domain">Marketing B2B / communication</div></div>
+    <div class="uc-detail-body">
+      <div class="uc-field full"><label>Description</label><p>Assistant éditorial transformant notes de mission, présentations et webinaires en articles, infolettres, publications LinkedIn et FAQ commerciales.</p></div>
+      <div class="uc-field"><label>Valeur / Complexité</label><div class="scores-grid"><span class="score-tag v">V: 110</span><span class="score-tag c">C: 68</span></div></div>
+      <div class="uc-field"><label>Bénéfices clés</label><p>Augmente la fréquence de publication. Réutilise des actifs existants. Réduit le coût par contenu.</p></div>
+    </div>
+  </div>
+
+  <!-- UC 18 -->
+  <div class="uc-detail">
+    <div class="uc-detail-header"><div class="uc-num">18</div><h4>Synthèse d'entretiens parties prenantes</h4><div class="uc-domain">Conseil ESG / concertation</div></div>
+    <div class="uc-detail-body">
+      <div class="uc-field full"><label>Description</label><p>Copilot de synthèse pour ateliers et entrevues : résume les verbatims, détecte les thèmes récurrents, classe les irritants et propose une première lecture de matérialité.</p></div>
+      <div class="uc-field"><label>Valeur / Complexité</label><div class="scores-grid"><span class="score-tag v">V: 110</span><span class="score-tag c">C: 68</span></div></div>
+      <div class="uc-field"><label>Bénéfices clés</label><p>Réduit le temps de première synthèse. Améliore l'homogénéité des livrables. Fait ressortir convergences et divergences.</p></div>
+    </div>
+  </div>
+
+  <!-- UC 15 -->
+  <div class="uc-detail">
+    <div class="uc-detail-header"><div class="uc-num">15</div><h4>Rédaction assistée des rapports ESG</h4><div class="uc-domain">Reddition de comptes ESG</div></div>
+    <div class="uc-detail-body">
+      <div class="uc-field full"><label>Description</label><p>Assistant de rédaction produisant une première version de rapport ESG, bilan carbone ou note de position à partir de données validées et d'anciens livrables.</p></div>
+      <div class="uc-field"><label>Valeur / Complexité</label><div class="scores-grid"><span class="score-tag v">V: 102</span><span class="score-tag c">C: 87</span></div></div>
+      <div class="uc-field"><label>Bénéfices clés</label><p>Accélère la production des premiers jets. Réduit la charge de reformulation bilingue. Libère du temps senior.</p></div>
+    </div>
+  </div>
+
+  <!-- UC 2 -->
+  <div class="uc-detail">
+    <div class="uc-detail-header"><div class="uc-num">2</div><h4>Localisation bilingue FR-EN</h4><div class="uc-domain">Production de contenus bilingues</div></div>
+    <div class="uc-detail-body">
+      <div class="uc-field full"><label>Description</label><p>Assistant bilingue traduisant et localisant propositions, rapports, comptes rendus et supports d'atelier en FR/EN, en conservant le vocabulaire ESG.</p></div>
+      <div class="uc-field"><label>Valeur / Complexité</label><div class="scores-grid"><span class="score-tag v">V: 89</span><span class="score-tag c">C: 39</span></div></div>
+      <div class="uc-field"><label>Bénéfices clés</label><p>Réduit le temps de production FR-EN. Libère des heures facturables. Améliore la cohérence terminologique.</p></div>
+    </div>
+  </div>
+
+  <!-- UC 14 -->
+  <div class="uc-detail">
+    <div class="uc-detail-header"><div class="uc-num">14</div><h4>Réemploi intelligent des livrables</h4><div class="uc-domain">Gestion des connaissances</div></div>
+    <div class="uc-detail-body">
+      <div class="uc-field full"><label>Description</label><p>Moteur de réemploi fouillant les anciens mandats pour retrouver formulations, matrices, plans d'action, KPI et exemples d'ateliers réutilisables.</p></div>
+      <div class="uc-field"><label>Valeur / Complexité</label><div class="scores-grid"><span class="score-tag v">V: 89</span><span class="score-tag c">C: 65</span></div></div>
+      <div class="uc-field"><label>Bénéfices clés</label><p>Réduit le temps de recherche. Accélère la rédaction. Renforce la cohérence méthodologique.</p></div>
+    </div>
+  </div>
+
+  <!-- UC 19 -->
+  <div class="uc-detail">
+    <div class="uc-detail-header"><div class="uc-num">19</div><h4>Collecte de données carbone assistée</h4><div class="uc-domain">Comptabilité carbone</div></div>
+    <div class="uc-detail-body">
+      <div class="uc-field full"><label>Description</label><p>Assistant transformant un périmètre carbone/ACV en listes de données à demander, exemples de preuves, relances courtoises et FAQ client par secteur.</p></div>
+      <div class="uc-field"><label>Valeur / Complexité</label><div class="scores-grid"><span class="score-tag v">V: 89</span><span class="score-tag c">C: 89</span></div></div>
+      <div class="uc-field"><label>Bénéfices clés</label><p>Réduit le temps de préparation des demandes. Améliore la complétude documentaire. Augmente la capacité de livraison.</p></div>
+    </div>
+  </div>
+
+  <!-- UC 10 -->
+  <div class="uc-detail">
+    <div class="uc-detail-header"><div class="uc-num">10</div><h4>FAQ interne normes ESG</h4><div class="uc-domain">Gestion des connaissances</div></div>
+    <div class="uc-detail-body">
+      <div class="uc-field full"><label>Description</label><p>FAQ interne sécurisée alimentée par les méthodes Ellio et normes ESG, capable de répondre aux questions des consultants avec sources et formulations réutilisables.</p></div>
+      <div class="uc-field"><label>Valeur / Complexité</label><div class="scores-grid"><span class="score-tag v">V: 76</span><span class="score-tag c">C: 20</span></div></div>
+      <div class="uc-field"><label>Bénéfices clés</label><p>Réduit le temps de recherche normative. Diminue les écarts d'interprétation. Accélère la montée en compétence.</p></div>
+    </div>
+  </div>
+
+  <!-- UC 5 -->
+  <div class="uc-detail">
+    <div class="uc-detail-header"><div class="uc-num">5</div><h4>Comptes rendus et plans d'action</h4><div class="uc-domain">Suivi de mandats</div></div>
+    <div class="uc-detail-body">
+      <div class="uc-field full"><label>Description</label><p>Copilot de suivi transformant notes de réunion et enregistrements en compte rendu structuré avec décisions, responsables, échéances et risques.</p></div>
+      <div class="uc-field"><label>Valeur / Complexité</label><div class="scores-grid"><span class="score-tag v">V: 76</span><span class="score-tag c">C: 25</span></div></div>
+      <div class="uc-field"><label>Bénéfices clés</label><p>Réduit fortement le temps de rédaction post-réunion. Standardise les comptes rendus. Diminue les oublis.</p></div>
+    </div>
+  </div>
+
+  <!-- UC 8 -->
+  <div class="uc-detail">
+    <div class="uc-detail-header"><div class="uc-num">8</div><h4>Onboarding méthodologique assisté</h4><div class="uc-domain">Gestion des connaissances</div></div>
+    <div class="uc-detail-body">
+      <div class="uc-field full"><label>Description</label><p>Copilot d'onboarding apprenant aux nouvelles recrues la méthode Ellio, les types de livrables, le lexique ESG et les standards de qualité documentaire.</p></div>
+      <div class="uc-field"><label>Valeur / Complexité</label><div class="scores-grid"><span class="score-tag v">V: 76</span><span class="score-tag c">C: 31</span></div></div>
+      <div class="uc-field"><label>Bénéfices clés</label><p>Réduit le temps d'autonomie des recrues. Diffuse les meilleures pratiques. Libère du temps expert.</p></div>
+    </div>
+  </div>
+
+  <!-- UC 20 -->
+  <div class="uc-detail">
+    <div class="uc-detail-header"><div class="uc-num">20</div><h4>Conception d'ateliers climat</h4><div class="uc-domain">Mobilisation parties prenantes</div></div>
+    <div class="uc-detail-body">
+      <div class="uc-field full"><label>Description</label><p>Assistant générant agendas, séquences, questions d'animation, exercices participatifs et supports bilingues pour ateliers climat, régénération ou gouvernance.</p></div>
+      <div class="uc-field"><label>Valeur / Complexité</label><div class="scores-grid"><span class="score-tag v">V: 76</span><span class="score-tag c">C: 30</span></div></div>
+      <div class="uc-field"><label>Bénéfices clés</label><p>Réduit le temps de cadrage. Améliore la qualité et variété des exercices. Uniformise les livrables bilingues.</p></div>
+    </div>
+  </div>
+
+  <!-- UC 17 -->
+  <div class="uc-detail">
+    <div class="uc-detail-header"><div class="uc-num">17</div><h4>Comités de gouvernance assistés</h4><div class="uc-domain">Gouvernance de mandats</div></div>
+    <div class="uc-detail-body">
+      <div class="uc-field full"><label>Description</label><p>Copilot de gouvernance préparant dossiers de comité, résumé d'avancement, arbitrages et PV avec décisions et escalades.</p></div>
+      <div class="uc-field"><label>Valeur / Complexité</label><div class="scores-grid"><span class="score-tag v">V: 76</span><span class="score-tag c">C: 56</span></div></div>
+      <div class="uc-field"><label>Bénéfices clés</label><p>Réduit le temps de préparation des comités. Améliore la qualité documentaire. Uniformise les pratiques de gouvernance.</p></div>
+    </div>
+  </div>
+
+  <!-- UC 6 -->
+  <div class="uc-detail">
+    <div class="uc-detail-header"><div class="uc-num">6</div><h4>Préparation de rendez-vous client</h4><div class="uc-domain">Développement commercial</div></div>
+    <div class="uc-detail-body">
+      <div class="uc-field full"><label>Description</label><p>Copilot compilant derniers échanges, contexte sectoriel, enjeux ESG et objections, puis proposant ordre du jour, questions et courriel de suivi.</p></div>
+      <div class="uc-field"><label>Valeur / Complexité</label><div class="scores-grid"><span class="score-tag v">V: 68</span><span class="score-tag c">C: 42</span></div></div>
+      <div class="uc-field"><label>Bénéfices clés</label><p>Réduit le temps de préparation. Standardise le brief client. Améliore la pertinence des questions.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 ROADMAP ============ -->
+<section id="roadmap" class="page-break">
+  <h2><span class="num">07</span> Feuille de route recommandée</h2>
+  <p class="section-intro">Déploiement progressif en trois phases, fondé sur le ratio valeur/complexité et la mutualisation des fondations.</p>
+
+  <div class="roadmap">
+    <div class="roadmap-phase p1">
+      <h4>Phase 1 — Quick wins</h4>
+      <div class="timeline">Semaines 0 à 6</div>
+      <ul>
+        <li><strong>Veille réglementaire ESG copilote</strong></li>
+        <li><strong>Analyse d'appels d'offres</strong></li>
+        <li><strong>Propositions commerciales sur mesure</strong></li>
+        <li><strong>Veille subventions et programmes climat</strong></li>
+      </ul>
+      <p style="margin-top:12px;font-size:13px;">Constituer les corpus minimums. Définir 5-10 prompts par usage. Mettre en place la revue humaine obligatoire. Mesurer les KPI de départ.</p>
+    </div>
+    <div class="roadmap-phase p2">
+      <h4>Phase 2 — Extension</h4>
+      <div class="timeline">Semaines 6 à 12</div>
+      <ul>
+        <li>Diagnostic ESG express</li>
+        <li>FAQ interne normes ESG</li>
+        <li>Comptes rendus et plans d'action</li>
+        <li>Localisation bilingue FR-EN</li>
+        <li>Onboarding méthodologique assisté</li>
+        <li>Conception d'ateliers climat</li>
+      </ul>
+      <p style="margin-top:12px;font-size:13px;">Réutiliser le socle de la Phase 1. Étendre le corpus. Formaliser la gouvernance d'usage.</p>
+    </div>
+    <div class="roadmap-phase p3">
+      <h4>Phase 3 — Approfondissement</h4>
+      <div class="timeline">Mois 3 à 6</div>
+      <ul>
+        <li>Collecte de données carbone assistée</li>
+        <li>Dossiers de certification accélérés</li>
+        <li>Réemploi intelligent des livrables</li>
+        <li>Business cases ESG orientés ROI</li>
+        <li>Rédaction assistée des rapports ESG</li>
+        <li>Scénarios prospectifs territoriaux</li>
+        <li>Synthèse d'entretiens parties prenantes</li>
+        <li>Thought leadership recyclé</li>
+        <li>Comités de gouvernance assistés</li>
+        <li>Préparation de rendez-vous client</li>
+      </ul>
+      <p style="margin-top:12px;font-size:13px;">Seulement après validation des pilotes. Ouvrir les cas plus exigeants en qualité de données et en méthode.</p>
+    </div>
+  </div>
+
+  <h3>Investissements nécessaires</h3>
+  <div class="org-grid">
+    <div class="org-card">
+      <h4>Outils et licences</h4>
+      <ul>
+        <li>Licences d'IA entreprise pour l'équipe cœur</li>
+        <li>Plateforme unique sécurisée avec contrôle d'accès</li>
+        <li>Capacité de gestion documentaire avec citations</li>
+      </ul>
+    </div>
+    <div class="org-card">
+      <h4>Temps et organisation</h4>
+      <ul>
+        <li>Temps de curation documentaire (corpus sources)</li>
+        <li>Sponsor de direction + responsable opérationnel</li>
+        <li>2-3 utilisateurs champions</li>
+        <li>Formation courte mais obligatoire</li>
+      </ul>
+    </div>
+    <div class="org-card">
+      <h4>Gouvernance</h4>
+      <ul>
+        <li>Nomenclature et règles d'accès documentaire</li>
+        <li>Glossaire ESG bilingue</li>
+        <li>Gabarits standards et bibliothèque de prompts</li>
+        <li>Politique d'anonymisation si nécessaire</li>
+      </ul>
+    </div>
+    <div class="org-card">
+      <h4>Mesure du ROI</h4>
+      <ul>
+        <li>KPI de départ mesurés avant pilote</li>
+        <li>Suivi hebdomadaire pendant le pilote</li>
+        <li>Revue de résultats à 6 et 12 semaines</li>
+        <li>Décision d'industrialisation sur base de données</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 08 RISKS ============ -->
+<section id="risks" class="page-break">
+  <h2><span class="num">08</span> Risques et gouvernance</h2>
+  <p class="section-intro">Les risques sont récurrents sur presque tous les cas. Ils sont gérables à condition de traiter l'IA comme un copilote avec sources, journalisation, droits d'accès et revue humaine.</p>
+
+  <div class="org-grid">
+    <div class="org-card" style="border-left: 4px solid var(--warn);">
+      <h4>Hallucinations</h4>
+      <p>Risque de clauses, critères, synthèses ou interprétations ESG erronées. <strong>Mitigation :</strong> exiger des sources explicites dans chaque réponse, revue humaine systématique, interdire l'usage autonome sur des sujets de conformité.</p>
+    </div>
+    <div class="org-card" style="border-left: 4px solid var(--warn);">
+      <h4>Confidentialité</h4>
+      <p>Documents clients, propositions passées et contenus de mission exposés. <strong>Mitigation :</strong> plateforme IA entreprise avec cloisonnement, contrôle d'accès par dossier, politique d'anonymisation.</p>
+    </div>
+    <div class="org-card" style="border-left: 4px solid var(--gold);">
+      <h4>Obsolescence des sources</h4>
+      <p>Contexte réglementaire mouvant (CSRD, ESRS, Loi 25). <strong>Mitigation :</strong> mise à jour planifiée du corpus, vérification des dates de publication, alertes de fraîcheur.</p>
+    </div>
+    <div class="org-card" style="border-left: 4px solid var(--gold);">
+      <h4>Surstandardisation</h4>
+      <p>Réponses génériques affaiblissant la différenciation conseil. <strong>Mitigation :</strong> prompts intégrant le ton Ellio, revue éditoriale, personnalisation sectorielle obligatoire.</p>
+    </div>
+    <div class="org-card" style="border-left: 4px solid var(--gold);">
+      <h4>Surconfiance</h4>
+      <p>Consultants faisant confiance à des réponses convaincantes mais insuffisamment sourcées. <strong>Mitigation :</strong> formation obligatoire, règle de « toujours vérifier », traçabilité des décisions.</p>
+    </div>
+    <div class="org-card" style="border-left: 4px solid var(--accent);">
+      <h4>Discipline d'usage</h4>
+      <p>Sans corpus propre, prompts validés et règles claires, l'effet restera marginal. <strong>Mitigation :</strong> financer la discipline autant que l'outil, gouvernance formalisée dès le jour 1.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 09 NEXT STEPS ============ -->
+<section id="next" class="page-break">
+  <h2><span class="num">09</span> Prochaines étapes</h2>
+  <p class="section-intro">Actions concrètes à engager pour lancer le pilote dans les prochaines semaines.</p>
+
+  <div class="exec-box">
+    <h4>1. Sélectionner une plateforme d'IA entreprise unique</h4>
+    <p>Concentrer l'effort sur un seul environnement sécurisé capable de gérer les documents internes et externes, les réponses avec citations, les gabarits réutilisables et un contrôle d'accès par type de dossier.</p>
+  </div>
+  <div class="exec-box">
+    <h4>2. Constituer les corpus minimums</h4>
+    <p>Sources réglementaires validées, appels d'offres passés, propositions gagnées, biographies, études de cas, sources de subventions. Glossaire ESG bilingue.</p>
+  </div>
+  <div class="exec-box">
+    <h4>3. Définir les prompts maîtres</h4>
+    <p>5 à 10 prompts standardisés par cas d'usage prioritaire, avec gabarits de sortie et règles de validation.</p>
+  </div>
+  <div class="exec-box">
+    <h4>4. Lancer le pilote de 6 semaines</h4>
+    <p>Sur les 4 cas prioritaires, avec 2-3 consultants champions, revue humaine obligatoire et mesure des KPI de départ (temps de veille, délai go/no-go, délai premier draft, opportunités qualifiées).</p>
+  </div>
+  <div class="exec-box">
+    <h4>5. Évaluer et décider</h4>
+    <p>À 6 semaines : revue des résultats, décision d'extension aux cas de Phase 2. À 12 semaines : revue approfondie et décision d'industrialisation sur base de données.</p>
+  </div>
+
+  <div class="exec-box gold" style="margin-top:30px;">
+    <h4>En résumé</h4>
+    <p>L'IA générative représente pour Ellio moins une rupture technologique qu'un <strong>levier d'amplification de son expertise</strong>. Bien pilotée, elle peut aider l'entreprise à <strong>traiter plus d'opportunités, absorber la complexité réglementaire, livrer plus vite et monétiser davantage son savoir-faire</strong>, sans alourdir disproportionnellement sa structure.</p>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<div class="report-footer">
+  <p>Rapport exécutif — IA générative à fort ROI pour Ellio — 15 mars 2026</p>
+  <p>Document confidentiel — 20 cas d'usage évalués — Généré à partir de l'export de données du projet</p>
+</div>
+
+</body>
+</html>
